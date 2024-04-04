@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:ital,wght@0,200;0,300;0,400;0,600;0,700;0,900;1,200;1,300;1,400;1,600;1,700&display=swap" rel="stylesheet">
+    <title>Design Analysis Tool</title>
+    <style>
+        body, html {
+          font-family: "Titillium Web", sans-serif;
+            height: 70%;
+            margin: 0;
+            margin-top: 10px;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        .container {
+            width: 60%;
+            margin-left: 1.5%;
+            margin-right: auto;
+            height: 100%;
+            display: inline-block;
+            flex-direction: column;
+        }
+        .button-layout {
+            display: flex;
+            justify-content: start;
+            padding: 10px 0;
+            background-color: #f8f8f8;
+            border-bottom: 1px solid #ccc;
+        }
+        .btn, .btn-label {
+            padding: 8px 16px;
+            margin-right: 10px;
+            cursor: pointer;
+            background-color: #7DCFB6;
+            color: white;
+            border: none;
+            text-align: center;
+            font-size: 16px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+            text-decoration: none; /* For <a> elements styled as buttons */
+        }
+        .btn:hover, .btn-label:hover {
+            background-color: #52bf9e;
+        }
+        #inputBox, #outputSuggestions {
+            flex-grow: 1;
+            width: 100%;
+            height: 50%;
+            margin-top: 10px;
+            padding: 20px;
+            box-sizing: border-box;
+            overflow: auto;
+            resize: vertical; /* Allow vertical resizing */
+            display: inline-block;
+        }
+        #outputSuggestions {
+            background-color: #f3f3f3;
+            text-align: center;
+            display: none;
+            height: 50%;
+        }
+        img {
+            max-width: 100%;
+            max-height: 100%;
+            display: block;
+            margin: 10px auto;
+        }
+        #imageUpload {
+            display: none;
+        }
+        #inputbox{
+          height: 50px;
+        }
+        .faq-container {
+    text-align: left; /* Aligns the FAQ questions to the right */
+    max-width: 600px; /* Adjust the width as necessary */
+    margin: auto;
+    border-left: 2px solid gray;
+    display: inline-block;
+    position: fixed;
+  }
+  .faq-question {
+    cursor: pointer;
+    padding: 10px;
+    margin: 5px;
+    background-color: #f1f1f1;
+  }
+  .faq-answer {
+    display: none;
+    text-align: left; /* Aligns the answer text to the left */
+    padding: 10px;
+    margin-top: 0px;
+    background-color: #ddd;
+  }
+  .faq-container{
+    margin-left: 5%;
+    width: 30%;
+  }
+  .faq h5{
+    margin-left: 30%;
+    font-size: 20px;
+
+  }
+  #home{
+      border: none;
+      font-size: 50px;
+      color: black;
+      font-weight: bold;
+      background-color: #ffffff;
+  }
+  header{
+    background-color: #ffffff;
+  }
+    </style>
+</head>
+<body>
+<header><button onclick="location.href='index.html';" id="home">Codi</button></header>
+<div class="container">
+    <div class="button-layout">
+        <label for="imageUpload" class="btn btn-label">Upload Image</label>
+        <input type="file" id="imageUpload" accept="image/*" onchange="loadImage(event)">
+        <button class="btn" id="analyzeDesignBtn">Analyze Design</button>
+    </div>
+    <textarea id="inputBox" placeholder="Enter text or upload an image..."></textarea>
+    <div id="outputSuggestions">Output suggestions will appear here...</div>
+</div>
+
+<div class="faq-container">
+  <div class="faq">
+    <h5>Tips to improve design</h5>
+    <div class="faq-question">Reduce gulfs of executions</div>
+    <div class="faq-answer">Gulf of execution is the difference between the intentions of the users and what the system allows them to do or how well the system supports those actions.</div>
+  </div>
+  <div class="faq">
+    <div class="faq-question">Affordances</div>
+    <div class="faq-answer">
+        Affordances in design refer to the perceived actions or possibilities that an object or interface offers to a user.</div>
+  </div>
+  <div class="faq">
+    <div class="faq-question"><a href="https://www.nngroup.com/articles/ten-usability-heuristics/">10 Usability Heuristics for User Interface Design</a></div>
+    <div class="faq">
+      <div class="faq-question">Accessibility</div>
+      <div class="faq-answer">
+        Accessibility is the concept of whether a product or service can be used by everyone—however they encounter it. Accessibility laws exist to aid people with disabilities, but designers should try to accommodate all potential users in many contexts of use anyway. To do so has firm benefits—notably better designs for all. <a href="https://www.interaction-design.org/literature/topics/accessibility#:~:text=Accessibility%20is%20the%20concept%20of%20whether%20a%20product,so%20has%20firm%20benefits%E2%80%94notably%20better%20designs%20for%20all.">Accessibility</a></div>
+    </div>
+    <!-- Add more FAQs as needed -->
+</div>
+
+<script>
+    const loadImage = (event) => {
+        const inputBox = document.getElementById('inputBox');
+        inputBox.style.display = 'none'; // Optionally hide the textarea when displaying an image
+
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const image = new Image();
+                image.src = e.target.result;
+                // Clear previous images
+                const previousImage = document.querySelector('.container img');
+                if (previousImage) previousImage.remove();
+                // Insert new image
+                const suggestionsBox = document.getElementById('outputSuggestions');
+                suggestionsBox.parentNode.insertBefore(image, suggestionsBox); 
+            };
+            reader.readAsDataURL(file);
+        }
+    };
+
+    document.getElementById('analyzeDesignBtn').addEventListener('click', () => {
+        const inputBox = document.getElementById('inputBox');
+        const outputSuggestions = document.getElementById('outputSuggestions');
+        const hasInput = inputBox.value.trim() !== '' || document.querySelector('.container img');
+
+        outputSuggestions.style.display = hasInput ? 'block' : 'none';
+        if (hasInput) {
+            outputSuggestions.textContent = 'Design is visually appealing. Consider optimizing image sizes for better performance.';
+        } else {
+            outputSuggestions.textContent = '';
+        }
+    });
+
+    var faqs = document.getElementsByClassName("faq-question");
+
+for (var i = 0; i < faqs.length; i++) {
+  faqs[i].addEventListener("click", function() {
+    // This function toggles the visibility of the answer element
+    var answer = this.nextElementSibling;
+    if (answer.style.display === "block") {
+      answer.style.display = "none";
+    } else {
+      answer.style.display = "block";
+    }
+  });
+}
+</script>
+
+</body>
+</html>

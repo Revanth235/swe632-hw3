@@ -1,0 +1,29 @@
+
+#btn1 {
+    padding: 1%;
+    margin-left: 32%;
+    border-radius: 10px;
+    background-color: #7DCFB6;
+    color: #FBF9EF;
+    font-size: 20px;
+    border: 3px solid black;
+    font-weight: bold;
+}
+
+#btn1:hover{
+    background-color: #52bf9e;
+}
+
+#btn2 {
+    padding: 1%;
+    border-radius: 10px;
+    background-color: #7DCFB6;
+    color: #FBF9EF;
+    font-size: 20px;
+    border: 3px solid black;
+    font-weight: bold;
+}
+
+#btn2:hover{
+    background-color: #52bf9e;
+}

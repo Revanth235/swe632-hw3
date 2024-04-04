@@ -1,0 +1,38 @@
+#save-btn{
+    background-color: #7DCFB6;
+    color: #FBF9EF;
+    border: 2px solid black;
+    padding-left: 20px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-right: 20px;
+}
+
+#clear-btn{
+    border: 2px solid black;
+    padding-left: 20px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-right: 20px;
+}
+
+body{
+    background-color: #121212;
+}
+
+.mb-4{
+    color: blanchedalmond;
+}
+
+h1{
+    text-align: left;
+}
+
+#editor{
+    background-color: #525251;
+    color: blanchedalmond;
+}
+
+#login{
+    background-color: #7DCFB6;
+}

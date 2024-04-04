@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:ital,wght@0,200;0,300;0,400;0,600;0,700;0,900;1,200;1,300;1,400;1,600;1,700&display=swap" rel="stylesheet">
+    <title>UI Code Assistant</title>
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.23.0/themes/prism.min.css" rel="stylesheet" />
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.23.0/prism.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.23.0/components/prism-javascript.min.js"></script>
+    
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            font-family: "Titillium Web", sans-serif;
+        }
+        #header {
+            padding: 20px;
+            background-color: #f3f3f3;
+            border-bottom: 1px solid #ddd;
+        }
+        #header h1 {
+            margin: 0;
+        }
+        #tabs {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+        #tabs li {
+            display: inline;
+            padding: 5px 10px;
+            margin-right: 4px;
+            cursor: pointer;
+            background-color: #e0e0e0;
+        }
+        #tabs li.active {
+            background-color: #d0d0d0;
+            border-bottom: 2px solid blue;
+        }
+        #main {
+            display: flex;
+            height: calc(100% - 70px); /* Adjusted for header height */
+        }
+        #codeSection, #chatSection {
+            padding: 20px;
+            border: 1px solid #ddd;
+            overflow: auto;
+        }
+        #codeSection {
+            width: 70%;
+            display: flex;
+            flex-direction: column;
+        }
+        #codeSection > textarea {
+            flex-grow: 1;
+            margin-bottom: 20px;
+        }
+        .codeOutput {
+    flex-grow: 1;
+    background: #ffffff; /* White background */
+    color: black; /* Light gray color for placeholder text */
+    padding: 10px;
+    white-space: pre-wrap;
+    position: relative;
+    border: 1px solid #ddd; /* Add a subtle border to match other elements */
+}
+      
+        #chatSection {
+            width: 30%;
+            display: flex;
+            flex-direction: column;
+            background-color: #ffffff;
+        }
+        #chatSection > h2 {
+            margin-top: 0;
+        }
+        #quickAccess {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 20px;
+        }
+        #quickAccess button {
+            padding: 5px 15px;
+        }
+        #chatInput {
+            flex-grow: 1;
+            margin-bottom: 20px;
+        }
+        .actionButton {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 20px;
+    background-color: #f3f3f3;
+    border-bottom: 1px solid #ddd;
+}
+
+.leftActions {
+    display: flex; /* This ensures the Save button and file input are inline */
+    align-items: center; /* This aligns the button and input vertically */
+}
+
+.zoomButtons {
+    display: flex;
+    gap: 5px; /* Adjusts the space between the zoom buttons */
+}
+
+
+        .copyText {
+            /* Styles for Copy Code text */
+            display: inline-block;
+            cursor: pointer;
+            text-decoration: none;
+            font-weight: bold;
+            color: #ffffff;
+            background-color: #007bff;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 0.9em;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            transition: background-color 0.3s ease;
+        }
+        .copyText:hover {
+            background-color: #0056b3;
+        }
+        #design{
+            margin-left: -20%;
+
+        }
+        #code{
+            margin-left: -30%;
+        }
+        #quickAccess button{
+            padding: 7px;
+            border-radius: 9px;
+            border: 2px solid black;
+            background-color: #7DCFB6;
+            color: white;
+            font-size: 14px;
+        }
+        #quickAcess button:hover{
+            background-color: #52bf9e;
+        }
+        #save{
+            padding: 5px;
+            margin-right: 1%;
+        }
+        #uploadCode{
+            padding: 1%;
+        }
+        #code{
+            padding: 5px;
+            color: #ffffff;
+            background-color: #7DCFB6;
+            border-radius: 9px;
+            margin-left: 35%;
+        }
+        #code:hover{
+            background-color: #52bf9e;
+        }
+        #design{
+            padding: 5px;
+            color: #ffffff;
+            background-color: #7DCFB6;
+            border-radius: 9px;
+            margin-left: -20%;
+        }
+        #zoomin{
+            padding-right: 7px;
+            padding-left: 7px;
+        }
+        #zoomout{
+            padding-right: 7px;
+            padding-left: 7px;
+        }
+        #home{
+            border: none;
+            font-size: 50px;
+            color: black;
+            font-weight: bold;
+        }
+        /* Adjustments may be needed based on actual layout and spacing */
+    </style>
+</head>
+<body>
+    <div id="header">
+        <h1><button id="home" onclick="location.href='index.html';">Codi</button></h1>
+    </div>
+    <div id="main">
+        <div id="codeSection">
+    <div class="actionButton">
+    <div class="leftActions"> <!-- New wrapper div for left-aligned actions -->
+        <button id="save">Save</button>
+        <input type="file" id="uploadCode">
+    </div>
+    <button type="button" id="code">Analyze Code</button>
+    <div class="zoomButtons">
+        <button onclick="zoom('codeInput', 'in')" id="zoomin">+</button>
+        <button onclick="zoom('codeInput', 'out')" id="zoomout">-</button>
+    </div>
+</div>
+
+
+
+    <!-- This textarea now serves both as a place to paste code and type in code -->
+    <textarea id="codeInput" placeholder="Paste your code here or enter..."></textarea>
+    <div class="codeOutput">Suggestions will appear here</div>
+
+</div>
+
+
+        <div id="chatSection">
+    <h2>Code Generator</h2>
+    <div id="quickAccess">
+        <button onclick="appendCode('login')">Login</button>
+        <button onclick="appendCode('shoppingCart')">Shopping Cart</button>
+        <button onclick="appendCode('contactForm')">Contact Form</button>
+        <button onclick="appendCode('navbar')">Navbar</button>
+    </div>
+    <!-- Move this block above the #chatInput textarea -->
+    <div class="codeOutput" id="codeOutput"><!-- Code output will appear here --></div>
+    <textarea id="chatInput" placeholder="Enter keywords(login, navbar, ...)"></textarea>
+</div>
+
+        </div>
+    </div>
+
+    <script>
+        const codeSnippets = {
+            'login': `<pre><code>&lt;form&gt;\n  &lt;input type="text" placeholder="Username" /&gt;\n  &lt;input type="password" placeholder="Password" /&gt;\n  &lt;button type="submit"&gt;Login&lt;/button&gt;\n&lt;/form&gt;</code></pre>`,
+            'shoppingCart': `<pre><code>&lt;div class="cart"&gt;\n  &lt;div class="item"&gt;\n    &lt;span&gt;Product Name&lt;/span&gt;\n    &lt;span&gt;Price&lt;/span&gt;\n  &lt;/div&gt;\n  &lt;!-- Add more items here --&gt;\n&lt;/div&gt;</code></pre>`,
+            'contactForm': `<pre><code>&lt;form&gt;\n  &lt;input type="text" placeholder="Your Name" /&gt;\n  &lt;input type="email" placeholder="Your Email" /&gt;\n  &lt;textarea placeholder="Your Message"&gt;&lt;/textarea&gt;\n  &lt;button type="submit"&gt;Send&lt;/button&gt;\n&lt;/form&gt;</code></pre>`,
+            'navbar': `<pre><code>&lt;nav&gt;\n  &lt;ul&gt;\n    &lt;li&gt;&lt;a href="#home"&gt;Home&lt;/a&gt;&lt;/li&gt;\n    &lt;li&gt;&lt;a href="#services"&gt;Services&lt;/a&gt;&lt;/li&gt;\n    &lt;li&gt;&lt;a href="#contact"&gt;Contact&lt;/a&gt;&lt;/li&gt;\n  &lt;/ul&gt;\n&lt;/nav&gt;</code></pre>`
+        };
+
+        function appendCode(component) {
+            const codeOutput = document.getElementById('codeOutput');
+            const copyTextHtml = '<div class="copyText" onclick="copyCodeToClipboard()">Copy</div>';
+            const snippet = codeSnippets[component] || "Component not found.";
+            codeOutput.innerHTML = copyTextHtml + snippet; // Including the Copy Code button
+        }
+
+        function copyCodeToClipboard() {
+            const codeOutput = document.getElementById('codeOutput');
+            const codeText = codeOutput.querySelector('pre code').innerText;
+            navigator.clipboard.writeText(codeText).then(() => {
+                alert('Code copied to clipboard!');
+            }).catch(err => {
+                console.error('Failed to copy text: ', err);
+            });
+        }
+
+        function zoom(elementId, inOrOut) {
+            const textarea = document.getElementById(elementId);
+            let zoomLevel = parseInt(window.getComputedStyle(textarea).fontSize);
+            zoomLevel = inOrOut === 'in' ? zoomLevel + 1 : zoomLevel - 1;
+            textarea.style.fontSize = `${zoomLevel}px`;
+        }
+
+        function switchTab(selectedTab) {
+            // Tab switching logic can be added here
+        }
+
+        document.getElementById('chatInput').addEventListener('keypress', function(event) {
+            if (event.keyCode === 13) { // Enter key pressed
+                const input = event.target.value.toLowerCase();
+                appendCode(input);
+                event.preventDefault(); // Prevent the default action
+                event.target.value = ''; // Clear the input field
+            }
+        });
+
+        document.getElementById('code').addEventListener('click', function() {
+    analyzeUI('code');
+});
+
+document.getElementById('design').addEventListener('click', function() {
+    analyzeUI('design');
+});
+
+function analyzeUI(type) {
+    const codeInput = document.getElementById('codeInput').value.trim();
+    const codeOutput = document.querySelector('.codeOutput');
+
+    if (!codeInput) {
+        codeOutput.innerHTML = 'Please enter some code in the input box before analyzing.';
+        return; // Exit the function if there's no input
+    }
+
+    let analysisResult = '';
+
+    // Assuming there's some logic to actually analyze the code or design based on input
+    if (type === 'code') {
+        // Example: Mock analysis result for code
+        analysisResult = 'Based on the code you provided, here are some suggestions: <ul><li>Minimize the use of inline styles for better performance.</li><li>Consider using CSS variables for theme consistency.</li><li>Optimize your JavaScript event listeners for improved responsiveness.</li></ul>';
+    } else if (type === 'design') {
+        // Example: Mock analysis result for design
+        analysisResult = 'Based on the design elements you provided, here are some suggestions: <ul><li>Enhance the color contrast for better readability.</li><li>Use consistent spacing and margin for a unified look.</li><li>Consider accessibility options for a wider audience reach.</li></ul>';
+    }
+
+    codeOutput.innerHTML = analysisResult;
+}
+
+document.getElementById('uploadCode').addEventListener('change', function(event) {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('codeInput').value = e.target.result;
+            };
+            reader.readAsText(file);
+        }
+    });
+
+    // Add the "Save" functionality
+    document.getElementById('save').addEventListener('click', function() {
+        const textToWrite = document.getElementById('codeInput').value;
+        const textFileAsBlob = new Blob([textToWrite], { type: 'text/plain' });
+        const fileNameToSaveAs = "my-code.txt";
+
+        const downloadLink = document.createElement("a");
+        downloadLink.download = fileNameToSaveAs;
+        downloadLink.href = window.URL.createObjectURL(textFileAsBlob);
+        downloadLink.style.display = "none";
+        document.body.appendChild(downloadLink);
+
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
+    });
+
+ document.getElementById('uploadCode').addEventListener('change', function(event) {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('codeInput').value = e.target.result;
+            };
+            reader.readAsText(file);
+        }
+    });
+    </script>
+</body>
+</html>

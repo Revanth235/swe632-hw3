@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css2?family=Titillium+Web:ital,wght@0,200;0,300;0,400;0,600;0,700;0,900;1,200;1,300;1,400;1,600;1,700&display=swap" rel="stylesheet">
+<title>FAQs Dropdown</title>
+<style>
+  *{
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  }
+  .faq-container {
+    text-align: right; /* Aligns the FAQ questions to the right */
+    max-width: 600px; /* Adjust the width as necessary */
+    margin: auto;
+    border-left: 2px solid gray;
+  }
+  .faq-question {
+    cursor: pointer;
+    padding: 10px;
+    margin: 5px;
+    background-color: #f1f1f1;
+  }
+  .faq-answer {
+    display: none;
+    text-align: left; /* Aligns the answer text to the left */
+    padding: 10px;
+    margin-top: 0px;
+    background-color: #ddd;
+  }
+  .faq-container{
+    margin-right: 0;
+    width: 30%;
+  }
+  .faq h5{
+    margin-right: 28%;
+  }
+</style>
+</head>
+<body>
+
+<div class="faq-container">
+  <div class="faq">
+    <h5>Tips to improve design</h5>
+    <div class="faq-question">Reduce gulfs of executions</div>
+    <div class="faq-answer">Gulf of execution is the difference between the intentions of the users and what the system allows them to do or how well the system supports those actions.</div>
+  </div>
+  <div class="faq">
+    <div class="faq-question">Include an appropriate amount of affordances</div>
+    <div class="faq-answer">
+        Affordances in design refer to the perceived actions or possibilities that an object or interface offers to a user.</div>
+  </div>
+  <div class="faq">
+    <div class="faq-question"><a href="https://www.nngroup.com/articles/ten-usability-heuristics/">10 Usability Heuristics for User Interface Design</a></div>
+  <!-- Add more FAQs as needed -->
+</div>
+
+<script>
+// Get all FAQ question elements
+var faqs = document.getElementsByClassName("faq-question");
+
+for (var i = 0; i < faqs.length; i++) {
+  faqs[i].addEventListener("click", function() {
+    // This function toggles the visibility of the answer element
+    var answer = this.nextElementSibling;
+    if (answer.style.display === "block") {
+      answer.style.display = "none";
+    } else {
+      answer.style.display = "block";
+    }
+  });
+}
+</script>
+
+</body>
+</html>

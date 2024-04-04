@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>UI Code Assistant</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            height: 100%;
+        }
+        #header {
+            color: blanchedalmond;
+            font-size: 30px;
+            font-weight: bold;
+            margin-left: 3%;
+        }
+
+        #main {
+            display: flex;
+            height: calc(100% - 40px);
+        }
+        #main > div {
+            padding: 20px;
+            border: 1px solid #ddd;
+            height: calc(100% - 40px);
+            overflow: auto;
+        }
+        #tabs {
+            display: flex;
+            list-style-type: none;
+            padding: 0;
+            margin-left: 20px;
+        }
+        #tabs > li {
+            padding: 10px 20px;
+            cursor: pointer;
+            background-color: #e0e0e0;
+            margin-right: 4px;
+        }
+        #tabs > li.active {
+            background-color: #d0d0d0;
+            border-bottom: 2px solid blue;
+        }
+        #codeSection {
+            width: 70%;
+        }
+        #chatSection {
+            width: 30%;
+            display: flex;
+            flex-direction: column;
+        }
+        #quickAccess {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 20px;
+        }
+        textarea {
+            width: calc(100% - 42px); /* Adjusting for padding and border */
+            height: 150px;
+            margin-bottom: 10px;
+        }
+        .codeOutput {
+            background: #e1e1e1;
+            padding: 10px;
+            margin-bottom: 10px;
+            white-space: pre-wrap; /* Preserve formatting of code snippet */
+            height: 150px; /* Larger code output area */
+        }
+        .actionButton {
+            margin-top: 10px;
+        }
+        .actionButton button {
+            margin-right: 5px;
+        }
+        #login{
+            background-color: #7DCFB6;
+            padding: 8px;
+            border-radius: 9px;
+            color: blanchedalmond;
+            border: 2px solid black;
+        }
+        #cart{
+            background-color: #7DCFB6;
+            padding: 8px;
+            border-radius: 9px;
+            color: blanchedalmond;
+            border: 2px solid black;
+        }
+        #contact{
+            background-color: #7DCFB6;
+            padding: 8px;
+            border-radius: 9px;
+            color: blanchedalmond;
+            border: 2px solid black;
+        }
+        #navbar{
+            background-color: #7DCFB6;
+            padding: 8px;
+            border-radius: 9px;
+            color: blanchedalmond;
+            border: 2px solid black;
+        }
+    </style>
+</head>
+<body>
+    <div id="header">
+        <h1>Cody</h1>
+    </div>
+    <div id="main">
+        <div id="codeSection">
+            <textarea id="codeInput"></textarea>
+            <div class="actionButton">
+                <button onclick="zoom('codeInput', 'in')">+</button>
+                <button onclick="zoom('codeInput', 'out')">-</button>
+                <button>Save</button>
+                <input type="file" id="uploadCode">
+            </div>
+        </div>
+        <div id="chatSection">
+            <h2>Code Generator</h2>
+            <div id="quickAccess">
+                <button onclick="appendCode('login')" id="login">Login</button>
+                <button onclick="appendCode('shoppingCart')" id="cart">Shopping Cart</button>
+                <button onclick="appendCode('contactForm')" id="contact">Contact Form</button>
+                <button onclick="appendCode('navbar')" id="navbar">Navbar</button>
+            </div>
+            <div class="codeOutput" id="codeOutput"><!-- Code output will appear here --></div>
+            <textarea id="chatInput" placeholder="Enter keywords..."></textarea>
+        </div>
+    </div>
+
+    <script>
+        // JavaScript functionality for tabs and zoom are the same from the previous code
+        // ...
+
+        // Updated code generator functionality with pre and code tags display
+        const codeSnippets = {
+            'login': `<pre><code>&lt;form&gt;\n  &lt;input type="text" placeholder="Username" /&gt;\n  &lt;input type="password" placeholder="Password" /&gt;\n  &lt;button type="submit"&gt;Login&lt;/button&gt;\n&lt;/form&gt;</code></pre>`,
+            'shoppingCart': `<pre><code>&lt;div class="cart"&gt;\n  &lt;div class="item"&gt;\n    &lt;span&gt;Product Name&lt;/span&gt;\n    &lt;span&gt;Price&lt;/span&gt;\n  &lt;/div&gt;\n  &lt;!-- Add more items here --&gt;\n&lt;/div&gt;</code></pre>`,
+            'contactForm': `<pre><code>&lt;form&gt;\n  &lt;input type="text" placeholder="Your Name" /&gt;\n  &lt;input type="email" placeholder="Your Email" /&gt;\n  &lt;textarea placeholder="Your Message"&gt;&lt;/textarea&gt;\n  &lt;button type="submit"&gt;Send&lt;/button&gt;\n&lt;/form&gt;</code></pre>`,
+            'navbar': `<pre><code>&lt;nav&gt;\n  &lt;ul&gt;\n    &lt;li&gt;&lt;a href="#home"&gt;Home&lt;/a&gt;&lt;/li&gt;\n    &lt;li&gt;&lt;a href="#services"&gt;Services&lt;/a&gt;&lt;/li&gt;\n    &lt;li&gt;&lt;a href="#contact"&gt;Contact&lt;/a&gt;&lt;/li&gt;\n  &lt;/ul&gt;\n&lt;/nav&gt;</code></pre>`
+        };
+
+        function appendCode(component) {
+            const codeOutput = document.getElementById('codeOutput');
+            codeOutput.innerHTML = codeSnippets[component] || "Component not found.";
+        }
+
+        document.getElementById('chatInput').addEventListener('keypress', function(event) {
+            if (event.keyCode === 13) {
+                const input = event.target.value.toLowerCase();
+                appendCode(input);
+                event.target.value = ''; // Clear the chat input after processing
+                event.preventDefault();
+            }
+        });
+
+        function zoom(elementId, inOrOut) {
+            const textarea = document.getElementById(elementId);
+            let zoomLevel = parseInt(window.getComputedStyle(textarea).fontSize);
+            zoomLevel = inOrOut === 'in' ? zoomLevel + 1 : zoomLevel - 1;
+            textarea.style.fontSize = `${zoomLevel}px`;
+        }
+
+        function switchTab(selectedTab) {
+            // Code to switch the content of the tabs
+            // This part of the functionality needs to be implemented according to your needs
+        }
+    </script>
+</body>
+</html>
